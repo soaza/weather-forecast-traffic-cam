@@ -1,4 +1,4 @@
-import { SegmentedControl, Select } from "@mantine/core";
+import { Loader, SegmentedControl, Select } from "@mantine/core";
 import React, { useState } from "react";
 import { isMobile } from "../common/hooks";
 import { ISelectedLocation } from "../common/interfaces";
@@ -17,10 +17,14 @@ export const LocationPicker = (props: { locations: any }) => {
         value={selectedLocation?.value}
         onChange={(e) =>
           setSelectedLocation(
-            locations.filter((location: any) => location.value === e)[0]
+            locations.filter((location: any) => location?.value === e)[0]
           )
         }
-        data={locations ? locations : [{ label: "No location found" }]}
+        data={
+          locations
+            ? locations.filter((location: any) => location !== undefined)
+            : [{ label: "No location found" }]
+        }
       />
 
       <div style={{ display: "flex", justifyContent: "center" }}>

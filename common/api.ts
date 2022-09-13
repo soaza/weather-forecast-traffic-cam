@@ -1,5 +1,9 @@
 import axios from "axios";
-import { IGoogleAPILocationResponse, ITrafficCamResponse } from "./interfaces";
+import {
+  IGoogleAPILocationResponse,
+  ITrafficCamResponse,
+  IWeatherForecastResponse,
+} from "./interfaces";
 
 const BACKEND_URL = "https://api.data.gov.sg/v1";
 
@@ -45,9 +49,19 @@ export const getTrafficImages: (
 ) => Promise<ITrafficCamResponse> = (
   dateTime: string = "2022-09-13T11:45:57"
 ) => {
-  console.log(dateTime);
   return axiosWrapper({
     url: `transport/traffic-images?date_time=${dateTime}`,
+    method: "GET",
+  });
+};
+
+export const getWeatherForecast: (
+  dateTime: string
+) => Promise<IWeatherForecastResponse> = (
+  dateTime: string = "2022-09-13T11:45:57"
+) => {
+  return axiosWrapper({
+    url: `environment/2-hour-weather-forecast?date_time=${dateTime}`,
     method: "GET",
   });
 };
