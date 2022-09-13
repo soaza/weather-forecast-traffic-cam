@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { getLocationUsingLatLong, getTrafficImages } from "../common/api";
-import { ICamera, ILocation, ISelectedLocation } from "../common/interfaces";
+import { ICamera, ISelectedLocation } from "../common/interfaces";
 import { InputFields } from "../components/InputFields";
 import { LocationPicker } from "../components/LocationPicker";
+import { isMobile } from "../common/hooks";
 
 const Home: NextPage = () => {
   const [dateTime, setDateTime] = useState("");
@@ -58,7 +59,7 @@ const Home: NextPage = () => {
     >
       <h1>Weather Forecast & Traffic Cam</h1>
 
-      <div style={{ width: "70%" }}>
+      <div style={{ width: isMobile() ? "100%" : "60%" }}>
         <div>
           <InputFields setDateTime={setDateTime} />
         </div>

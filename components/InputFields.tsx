@@ -2,6 +2,7 @@ import { DatePicker, TimeInput } from "@mantine/dates";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { DATE_FORMAT, TIME_FORMAT } from "../common/utils";
+import { isMobile } from "../common/hooks";
 
 export const InputFields = (props: {
   setDateTime: (datetime: string) => void;
@@ -21,7 +22,7 @@ export const InputFields = (props: {
     <div
       style={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: isMobile() ? "column" : "row",
         gap: 10,
       }}
     >
@@ -29,7 +30,6 @@ export const InputFields = (props: {
         style={{ width: "100%" }}
         placeholder="Pick date"
         label="Date"
-        withAsterisk
         value={date}
         onChange={(date: Date) => {
           setDate(date);
@@ -40,7 +40,6 @@ export const InputFields = (props: {
         style={{ width: "100%" }}
         placeholder="Pick date"
         label="Time"
-        withAsterisk
         value={time}
         onChange={(date: Date) => {
           setTime(date);

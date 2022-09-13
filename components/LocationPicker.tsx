@@ -1,5 +1,6 @@
 import { SegmentedControl, Select } from "@mantine/core";
 import React, { useState } from "react";
+import { isMobile } from "../common/hooks";
 import { ISelectedLocation } from "../common/interfaces";
 
 export const LocationPicker = (props: { locations: any }) => {
@@ -10,6 +11,7 @@ export const LocationPicker = (props: { locations: any }) => {
   return (
     <>
       <Select
+        label="Location"
         style={{ marginTop: 10 }}
         placeholder="Pick Location"
         value={selectedLocation?.value}
@@ -21,7 +23,12 @@ export const LocationPicker = (props: { locations: any }) => {
         data={locations ? locations : [{ label: "No location found" }]}
       />
 
-      <img src={selectedLocation?.screenshot} />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <img
+          style={{ marginTop: 30, width: isMobile() ? "100%" : "50%" }}
+          src={selectedLocation?.screenshot}
+        />
+      </div>
     </>
   );
 };
