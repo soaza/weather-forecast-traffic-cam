@@ -18,9 +18,9 @@ export const WeatherForecast = (props: { dateTime: string }) => {
     <div>
       <h1> Weather Forecast</h1>
 
-      {forecasts.map((forecast) => {
+      {forecasts.map((forecast, index) => {
         return (
-          <div>
+          <div key={index}>
             {forecast.area} : {forecast.forecast}
           </div>
         );
