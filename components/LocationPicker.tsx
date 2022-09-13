@@ -1,23 +1,27 @@
-import { SegmentedControl } from "@mantine/core";
-import React, { useEffect } from "react";
-import { getLocationUsingLatLong } from "../common/api";
-import { ILocation } from "../common/interfaces";
+import { SegmentedControl, Select } from "@mantine/core";
+import React, { useState } from "react";
+import { ISelectedLocation } from "../common/interfaces";
 
-export const LocationPicker = (props: { locations: ILocation[] }) => {
+export const LocationPicker = (props: { locations: any }) => {
   const { locations } = props;
 
-  useEffect(() => {
-    // https://maps.googleapis.com/maps/api/geocode/json?latlng=44.4647452,7.3553838&key=AIzaSyByQN48s8m41InBkkfPS_7G9Sm5KoNDHi4
-    const fetchLocation = async (location: ILocation) => {
-      const res = await getLocationUsingLatLong(
-        location.latitude,
-        location.longitude
-      );
-      console.log(res.results[0]?.formatted_address);
-    };
+  const [selectedLocation, setSelectedLocation] = useState<ISelectedLocation>();
 
-    locations.map(fetchLocation);
-  }, [locations]);
+  return (
+    <>
+      <Select
+        style={{ marginTop: 10 }}
+        placeholder="Pick Location"
+        value={selectedLocation?.value}
+        onChange={(e) =>
+          setSelectedLocation(
+            locations.filter((location: any) => location.value === e)[0]
+          )
+        }
+        data={locations ? locations : [{ label: "No location found" }]}
+      />
 
-  return <SegmentedControl data={[]} orientation="vertical" />;
+      <img src={selectedLocation?.screenshot} />
+    </>
+  );
 };

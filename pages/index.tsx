@@ -1,20 +1,52 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { getTrafficImages } from "../common/api";
-import { ILocation } from "../common/interfaces";
+import { getLocationUsingLatLong, getTrafficImages } from "../common/api";
+import { ICamera, ILocation, ISelectedLocation } from "../common/interfaces";
 import { InputFields } from "../components/InputFields";
 import { LocationPicker } from "../components/LocationPicker";
 
 const Home: NextPage = () => {
-  const [locations, setLocations] = useState<ILocation[]>([]);
+  const [dateTime, setDateTime] = useState("");
+  const [formattedLocations, setFormattedLocations] = useState<
+    ISelectedLocation[]
+  >([]);
 
   useEffect(() => {
     const fetchTrafficData = async () => {
-      const res = await getTrafficImages();
-      setLocations(res.items[0].cameras.map((camera: any) => camera.location));
+      const imageData = await getTrafficImages(dateTime);
+
+      const locations = imageData.items[0].cameras.slice(0, 5);
+
+      const fetchLocation = async (camera: ICamera) => {
+        const res = await getLocationUsingLatLong(
+          camera.location.latitude,
+          camera.location.longitude
+        );
+        console.log(res.results[0]);
+
+        const formattedAddress = res.results[0].formatted_address;
+
+        if (formattedAddress) {
+          return {
+            value: formattedAddress,
+            label: formattedAddress,
+            screenshot: camera.image,
+          };
+        } else {
+          return;
+        }
+      };
+
+      const formattedAddresses: ISelectedLocation[] = (await Promise.all(
+        locations.map(fetchLocation)
+      )) as ISelectedLocation[];
+
+      setFormattedLocations(formattedAddresses);
     };
-    fetchTrafficData();
-  }, []);
+    if (dateTime) {
+      fetchTrafficData();
+    }
+  }, [dateTime]);
 
   return (
     <div
@@ -22,20 +54,17 @@ const Home: NextPage = () => {
         display: "flex",
         flexDirection: "column",
         padding: "5% 10%",
-        gap: 20,
       }}
     >
-      <div
-        style={{
-          width: "70%",
-          display: "flex",
-          flexDirection: "row",
-          gap: 30,
-        }}
-      >
-        <InputFields />
+      <h1>Weather Forecast & Traffic Cam</h1>
+
+      <div style={{ width: "70%" }}>
+        <div>
+          <InputFields setDateTime={setDateTime} />
+        </div>
+
+        <LocationPicker locations={formattedLocations} />
       </div>
-      <LocationPicker locations={locations} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 export interface ITrafficCamResponse {
-  items: Item[];
+  items: IItem[];
   api_info: IAPIInfo;
 }
 
@@ -72,4 +72,10 @@ export interface Bounds {
 export interface Location {
   lat: number;
   lng: number;
+}
+
+export interface ISelectedLocation {
+  value: string;
+  label: string;
+  screenshot: string;
 }

@@ -41,10 +41,11 @@ const axiosWrapper = ({ url, method, body, externalUrl }: IFetchWrapper) => {
 };
 
 export const getTrafficImages: (
-  dateTime?: string
+  dateTime: string
 ) => Promise<ITrafficCamResponse> = (
   dateTime: string = "2022-09-13T11:45:57"
 ) => {
+  console.log(dateTime);
   return axiosWrapper({
     url: `transport/traffic-images?date_time=${dateTime}`,
     method: "GET",
