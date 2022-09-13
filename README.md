@@ -1,4 +1,4 @@
-Deployed at [https://we-are-the-champions.vercel.app/](https://weather-forecast-traffic-cam.vercel.app/)
+Deployed at https://weather-forecast-traffic-cam.vercel.app/
 
 ## Running locally
 
